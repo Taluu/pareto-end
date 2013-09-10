@@ -1,0 +1,21 @@
+---
+layout: post
+title: ! 'Talus'' TPL v2 : Changement d''avis !'
+categories:
+- Talus' Works
+- Templates
+tags:
+- Changements Internes
+- Regex
+- Templates
+- V2
+status: publish
+type: post
+published: true
+meta:
+  _use_texy: '1'
+  _edit_last: '1'
+---
+<p style="text-align: justify; text-indent:30px;">Bonjour à tous,</p>
+<p style="text-align: justify; text-indent:30px;">Dans un billet précédent, je vous faisais part sur la préparation de la version 2, comme quoi je voulais utiliser le couple DOM + XSL pour parser les templates (ou du moins les blocs, du type &lt;block&gt;, &lt;function&gt;, &lt;foreach&gt;, ...). Après quelques tests, ô grande déception (et encore, ce n'était que pour les conditions... !), il s'est avéré que ce fut <strong><span style="text-decoration: underline;">trois fois</span> plus lent qu'avec les regex</strong> !</p>
+<p style="text-align: justify; text-indent:30px;">DOM + XSLT ? Non, merci, mais je retourne sur les REGEX. Donc pour faire une v2, plusieurs changements internes auront lieu (comme ca je pourrais faire ce que je veux au niveau de la rétro-compatibilité pour la v1...) : par exemple, pour la balise &lt;block&gt;, je compte toujours faire un attribut "parent" au lieu de mettre tout pelle-mêle dans l'attribut name, changer quelques noms de méthodes utilisées, la possibilité d'utiliser un <em>namespace</em>, ... Enfin, vous verrez ça en temps... Et en heure.</p>

@@ -1,0 +1,28 @@
+---
+layout: post
+title: Android... Sur Netbeans !
+categories:
+- Labo
+tags:
+- Android
+- Google
+- Installation
+- Netbeans
+- SDK
+- Troll
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _wp_old_slug: ''
+---
+<p style="text-align:center;"><img class="aligncenter" title="Logo Android" src="http://images.mobilefonereviews.co.uk/images/google_android_logo.jpg" alt="Logo Android" width="246" height="93" /></p>
+<p style="text-align: justify;">Oyoo,</p>
+<p style="text-align: justify;">Comme promis, je ne suis pas mort. Du moins pas encore... Même si c'est pas vraiment le sujet que je souhaitais aborder (bon d'accord, je n'en avais pas vraiment en tête, mais c'était pas vraiment dans ce domaine), voici un mini-tuto pour pouvoir<strong> développer pour les smartphones Android sur Netbeans</strong> (qui est, je le rappelle, bien mieux que Eclipse ! #troll).</p>
+<p style="text-align: justify;"><!--more--></p>
+<p style="text-align: justify;">Première étape, commune et à Netbeans et à Eclipse, il faut télécharger <a href="http://developer.android.com/sdk/index.html">le SDK sur le site officiel de développeurs Android</a> [EN], puis l'installer. Jusqu'ici, rien de bien compliqué... Une fois ceci fait, cherchez l'executable "android" (<em>tools\android.bat sous Windows</em>), puis dans l'onglet <em>Available Packages</em>, sélectionnez le seul site disponible, et installez les platformes / packages que vous désirez installer. Travaillons, par exemple, avec la 2.2. Une chose utile à prendre serait les documentations et quelques exemples pour se mettre dans le bain, à voir si vous débutez ou non.</p>
+<p style="text-align: justify;">Une fois installés, allez dans Netbeans, et installez le plugin <a href="http://nbandroid.kenai.com/">NBAndroid</a> [EN], disponible sur le site du projet Kenai. Il existe deux façons de l'installer ; ou bien par le package .nbm, ou bien par l'interface des plugins de netbeans, celle que je préfère. Pour cela, allez dans le menu <em>Tools</em>, puis <em>Plugins</em> ; Dans la fenêtre ouverte, sélectionnez l'onglet <em>Settings</em>, puis cliquez sur <em>Add</em>. Entrez l'adresse du dépot de Kenai, à savoir <em>http://kenai.com/downloads/nbandroid/updates.xml</em>. Installez le plugin Android.</p>
+<p style="text-align: justify;">Enfin, dernière étape : Toujours dans le menu <em>Tools</em>, allez dans <em>Java Platforms</em>. Ajoutez une nouvelle platforme Java via le bouton correspondant, puis sélectionnez <strong>Google Android Open Handheld Platform</strong>... Et sélectionnez où vous avez installé le SDK (le dossier extrait). Enfin, dans le prochain écran, sélectionnez la platforme de développement (Android 2.2 en l'occurrence), et puis finir... Et voilà, vous avez terminé.</p>
+<p style="text-align: justify;">Vous pouvez désormais créer de nouveaux projets android, les tester sur l'émulateur fourni. <strong>Pensez à en créer un auparavant</strong> (retournez sur l'outil fourni par l'executable android mentionné plus haut, créez une nouvelle AVD (android virtual device), avec les options que vous voulez (ceci sera peut-être le sujet pour un prochain article ? A voir), et donnez-lui un nom correct) !</p>
+<p style="text-align: justify;">NB : Les images / screens viendront plus tard... Un jour peut-être. :p</p>

@@ -1,0 +1,29 @@
+---
+layout: post
+title: Avalanche...
+categories:
+- 3615 MyLife
+- Coups de Gueules
+- En Vrac
+- Talus' Works
+- Vie Etudiante
+tags:
+- Coup de Gueule
+- Développement
+- EFREI
+- Examens
+- IE
+- Talus' Works
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+---
+<p style="text-align: justify;">Bonsoir à tous,</p>
+<p style="text-align: justify;">Je viens de me rendre compte à l'instant que ça fait déjà un petit bout de temps que j'ai rien publié : je répare cette erreur, et vous tient ainsi au courant de tout ce qui s'est passé depuis :p.</p>
+<p style="text-align: justify;"><!--more--></p>
+<p style="text-align: justify;">Tout d'abord, le plus intéressant (ou pas ?) : MyLife. Qui est bien poisseuse en ce moment... Je m'egzblik. En ce moment, <strong>je suis en <em>stage commercial</em></strong>, et mon boulot consiste à téléphoner à plusieurs sociétés pour récolter des informations. Et je suis en plein dans la 3ème semaine (sur 4)... Maintenant, si, en dehors du cadre du stage, on me présente un téléphone, je le bouffe, le cordon avec !</p>
+<p style="text-align: justify;">Je suis également en plein dans ma semaine de rattrapage, et justement, qui dit rattrapage, dit scolarité. Qui dit scolarité, dit école. Jusque là, je pense que vous me suivez. Et bien j'ai eu mon premier rattrapage ce lundi dernier, et je suis soi disant accusé d'avoir triché à cause d'un foutu concours de circonstances... Mon sac à coté de moi, ouvert (j'avais pas fait gaffe et zappé de le fermer), la chaise rabattue dessus, et soit disant un drôle d'arrangement. Alors que je n'ai <em><strong>PAS</strong></em> tourné la tête <strong><em>UNE SEULE FOIS</em></strong> vers ce putin de sac, on veut me foutre un zéro. Bande de connards. Alors que y'en avait qui grugeaient et qu'on entendait à quelques rangs plus loin...  Bordel. Sont pris à gruger ceux qui ne grugent pas. Ah elle est belle la philosophie efreinne. Si, à la rigueur, <strong>on m'aurait VU la tête DANS le sac</strong> (avec le paquet de feuilles agraphées, et dans une encre super claire à cause de l'imprimante qui a décidé d'en faire des siennes), sachant que le paquet est illisible, j'aurais rien dit et accepté. Sauf que ce n'est pas le cas. Enfin aussi, quand on est un incapable pas foutu de faire correctement un emploi du temps, faut pas chercher bien loin... Organisation vraiment foireuse. C'était mon coup de gueule de la semaine.</p>
+<p style="text-align: justify;">Ensuite, passons au niveau dév... PHP 5.3 est sorti depuis mardi (en apportant son lot de nouveautés ; je vous laisse regarder avec notre ami pour les nouveautés apportées), Netbeans 6.7 est sorti depuis peu de temps aussi, Mozilla Firefox 3.5 aussi... Décidément, ca en fait des nouveautés au niveau du dev. Même si en ce moment j'ai pas l'esprit à ça, mais ca c'est une autre histoire. Plus qu'a attendre que OVH gère le 5.3, et je me précipiterais dessus ; En ce moment, je suis en train de construire une autre gestion des URLs pour Talus' Works, via un routeur. Ca va brusquer un peu le référencement, certes, mais prout. Aussi, je laisse tomber de vouloir adapter TW à HTML5, trop de boulot, et pas envie. Surtout que j'ai réussi à faire fonctionner TW sous IE, en rusant un peu... <strong>Et aussi le retour des pubs adsense.</strong></p>
+<p style="text-align: justify;">Le problème était tout con ; Firefox, Opera, Safari, ... (bref, les navigateurs à jour au niveau de la technologie web), pour le Content-Type <em>application/xhtml+xml</em>, ne disposent pas de la méthode javascript <em>document.write()</em>. Qui est utilisée par Google pour ses annonces AdSense... Pour détourner ce problème, il faut appeler une balise <em>&lt;object /&gt;</em>, mettre le code que propose Google dans un template à part, et indiquer un type "text/html". C'est moche, mais ça marche.</p>

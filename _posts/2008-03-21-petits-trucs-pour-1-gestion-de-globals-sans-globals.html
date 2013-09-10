@@ -1,0 +1,87 @@
+---
+layout: post
+title: ! 'Petits trucs pour... #1 : Gestion de globals... Sans globals !'
+categories:
+- Labo
+- Petits trucs pour...
+tags:
+- astuces
+- globals
+- trucs
+status: publish
+type: post
+published: true
+meta: {}
+---
+
+<p align="justify">Comme l'a suggéré Xireus, j'inaugure une nouvelle catégories : Les "Petits trucs pour...", où j'expose des astuces, ou même le topo pour savoir faire un effet, un script particulier.</p>
+
+<p align="justify">Pour cette première édition, je vais vous parler d'une façon amusante de faire des globals... Sans s'emmêler dans les scripts, avec les foisons de globals, et ainsi ne pas s'emmêler dans ses variables ! </p>
+<!--more-->
+<p align="justify">En fait, il s'agit d'utiliser une classe prédéfinie (que vous aurez définie auparavant :p), qui contient toutes les globales que vous voulez. Mais attention, il s'agira de faire une classe dont ses propriétés seront... Statiques !</p>
+
+<p align="justify">Imaginons que j'ai une instance pour les templates,  la base de donnée, et le cache, par exemple. Au lieu de faire, partout :</p>
+
+<pre lang="php">$tpl = new Talus_TPL('./', './cache/');
+
+$db = new DB('localhost', 'root', '', 'ma_bdd');$cache = array();
+
+function foo(){
+
+ global $tpl, $db, $cache;
+
+ // ... Blablabla ....
+
+ bar(); // (pourquoi pas)
+
+}
+
+function bar(){
+
+ global $tpl, $db, $cache;
+
+ // ... Bliblibli ....
+
+}
+
+foo();
+
+// -- Etc.</pre>
+<p align="justify">Vous n'aurez même pas besoin d'utiliser ce moche global en début de vos fonctions. Vous pouvez, certes, pour éviter de l'utiliser, utiliser <a href="http://docs.php.net/manual/fr/reserved.variables.php#reserved.variables.globals">$_GLOBALS</a>, mais c'est peu lisible. D'où l'utilisation d'une classe, avec ses propriétés en accès statiques, pour, en plus d'améliorer la lisibilité du code, est accessible de partout !</p>
+
+<pre lang="php">final class Instances {
+
+ public static $tpl = null;
+
+ public static $db = null;
+
+}final class Systeme {
+
+ public static $cache = array();
+
+}
+
+Instances::$tpl = new Talus_TPL('./', './cache/');
+
+Instances::$db = new DB('localhost', 'root', '', 'ma_bdd');
+
+function foo{
+
+ // -- blablabla...
+
+ $res = Instances::$db->query('SELECT foo FROM bar;');
+
+ bar($res);
+
+}
+
+function bar($res){
+
+ while( $data = $res->fetch() ){
+
+ 	Instances::$tpl->assign_block_var('bloc', 'MA_VAR', $data['foo']);
+
+ }
+
+}</pre>
+<p align="justify">Certes, le "<strong>Nom_de_classe</strong>::<em>Variable_Globale</em> est un peu plus long à taper, mais franchement, je préfère priviliéger la lisibilité. En plus, vous pouvez séparer (comme je l'ai fait là :p), et ainsi améliorer cette même lisibilité !</p>

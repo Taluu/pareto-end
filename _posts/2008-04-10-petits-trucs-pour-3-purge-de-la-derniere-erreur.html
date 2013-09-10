@@ -1,0 +1,42 @@
+---
+layout: post
+title: ! 'Petits trucs pour... #3 : Purge de la dernière erreur'
+categories:
+- Labo
+- Petits trucs pour...
+tags:
+- astuces
+- erreurs
+- Petits trucs pour...
+- trucs
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _use_texy: '1'
+---
+Bonsoir à tous,
+
+C'est en cette heure tardive que je vous livre la deuxième édition des "Petits trucs pour..." !
+<p style="text-align: justify;">Alors que pour Talus' TPL, je cherchais un moyen de pouvoir faire un gestionnaire d'erreurs <strong>efficace</strong>, sans paser par les exceptions ou encore les gestionnaires d'erreurs, j'avais trouvé mon bonheur sur <a title="Doc PHP" href="http://www.php.net/error_get_last" target="_self">error_get_last()</a>. Mais le problème est que si une erreur est detecté <strong>avant</strong> le passage par <a title="Doc PHP - Eval" href="http://www.php.net/eval" target="_self">eval()</a>, l'erreur précédente était detectée, et... affichait un truc bidon.</p>
+<!--more-->
+<p style="text-align: justify;">Mais j'ai trouvé le petit truc pour, en quelques sortes, "vider" le contenu renvoyé par la fonction <a title="Doc PHP" href="http://www.php.net/error_get_last" target="_self">error_get_last()</a> (plus d'infos sur la doc !) . il suffit de lancer via un <a title="Doc PHP - Trigger Error" href="http://www.php.net/trigger_error" target="_self">trigger_error()</a>, une erreur bidon de type notice... Et de detecter dans l'array renvoyé par <a title="Doc PHP" href="http://www.php.net/error_get_last" target="_self">error_get_last()</a> (dans l'indice du message d'erreur) si c'est le message bidon ou un autre. Fatalement, si c'est le message bidon, alors il n'y a pas eu d'erreur lors de l'execution du code à tester ; sinon il peut y en avoir eu une.</p>
+<p style="text-align: justify;">Comme ce n'est jamais plus clair qu'un exemple, en voici un :</p>
+/---code php
+<?php
+echo $a;
+@trigger_error('Purge', E_USER_NOTICE);
+@eval('echo $b;');
+$err = error_get_last();
+if ($err['message'] != 'Purge'){
+    echo 'il y a eu une erreur ! </code>
+        <pre>' . print_r($err, true) . '</pre>';
+}
+\---
+
+<p style="text-align: justify;">Ce code devrait afficher une erreur de type Warning (car $b n'est pas défini). $a non plus, mais comme on purge, on ne le verra pas.</p>
+<p style="text-align: justify;">Le @ est ici de mise sur le trigger error, pour que le message bidon ne soit pas affiché... Et, pour l'eval, pour que les erreurs fatales ne stoppent pas le script (libre à vous de le faire stopper par la suite).</p>
+
+<p style="text-align: justify;">A bientôt pour la prochaine édition des "Petits trucs pour...." !</p>
+</pre>

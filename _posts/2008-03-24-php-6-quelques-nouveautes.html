@@ -1,0 +1,72 @@
+---
+layout: post
+title: PHP 6 - Quelques nouveautés...
+categories:
+- Labo
+tags:
+- PHP6
+status: publish
+type: post
+published: true
+meta: {}
+---
+
+<p align="justify">Bonjour à tous,</p>
+<p align="justify">Etant actuellement en quête d'infos sur <a href="/index.php?tag/PHP6">PHP6</a>, j'ai fait un petit tour sur le Web pour trouver quelques infos sur <a href="/index.php?tag/PHP6">PHP6</a>... Qui va changer pas mal de choses.</p>
+<p align="justify">Changements, qui, pour la plupart, nous seront plus que bénéfiques !</p>
+<!--more-->
+<p align="justify">Alors que PHP6 arrive à grands pas, pas mal de développeurs (je suis pas le premier, j'en suis sûr) peuvent se poser la question : "PHP6, certes, mais quelles nouveautés ?". Question qui reste ardue à répondre, mais, en me promenant sur deux trois blogs bien connus (citons par exemple le <a href="http://www.cyruss.com/blog/index.php?2008/02/20/170-les-nouveautes-de-php6-php-6" hreflang="fr">blog de Cyril Pierre de Geyer</a> (aka "Cyruss"), co-auteur du bouquin "PHP 5 Avancé"). Certes, ca va tourner sur la même chose (c'est d'ailleurs pour ça que je vais être bref), enfin, passons.</p>
+<p align="justify">Tout d'abord, le support de l'UTF-8. Plus besoin de recoder ses fonctions pour l'utf8, puisqu'elles seront directement intégrées dans le coeur de PHP. Même si... C'est à double tranchant. En effet, maintenant va falloir s'habituer à coder en UTF-8... Galère. J'ai déjà convertit mes scripts en UTF-8, mais la galère reste la même (le résultat n'est pas tout à fait celui escompté...).</p>
+
+<p align="justify"><strong>Pas mal de directives vont désormais être zapée du coeur de PHP</strong>. Citons par exemple les register_globals (oui oui, elles étaient toujours là....), les regsiter_long_array ($HTTP_*_VARS), les magic_quotes_* (sybase, gpc, etc), ou encore safe_mode <del>(saloperie)</del>. Avis à ceux qui ne sécurisent pas leur script, utilise les register_globals ou encore les register_long_array, et autres magic quotes : <strong>Mettez vous <em>à jour</em> !</strong>. <em>Une tentative d'insertion de ces directives entrainera une erreur PHP de type E_CORE_ERROR</em>.
+Par contre, les <strong>short_open_tags</strong> (les &lt;?), qui étaient censé disparaître lors de PHP6, ben... Elles restent là. Même si les <strong>asp_tags disparaissent</strong> (&lt;%), au grand bonheur de tous, enfin.
+<p align="justify">Hypothétiquement, <strong>pas mal d'extensions vont être déplacées dans le dépot PECL</strong> (Dépot d'extensions de PHP codées en C). Citons par exemple les fonctions ereg_*() (regex dites <em>POSIX</em>), favorisant ainsi les <em>PCRE</em> (preg_*). Si on tente de les désactiver, on se mange un E_CORE_ERROR.... Ou encore, les fonctions de bases SQL, du type mysql(i)_*(), pour favoriser PDO.</p>
+<p align="justify">Les <strong>espaces de noms</strong>, qui étaient initialement prévus pour PHP 5.x (maintenant pour PHP 5.3.x), font désormais leur apparition... Et c'est pas un mal ! Celles ci permettront, en quelques sortes, de mieux structurer le code PHP (particulirement utile pour le développement de grandes applications). Auparavant c'était plus ou moins imité grace aux classes et à leur méthodes statiques... (Type Display::message() de FSB2 par exemple). Il existe un morceau de documentation (pas encore traduit) <a href="http://docs.php.net/namespaces" hreflang="en">à cette adresse</a>. Voici un exemple du namespace (Merci à `Haku pour l'exemple, j'avais la flemme de me creuser la tête ^^') :</p>
+
+<pre lang="php">
+namespace Complex;
+function create(int $real, int $img){
+    return array($real, $img);
+}
+
+function sum(array $a, array $b){
+    return array($a[0] + $b[0], $a[1] + $b[1]);
+}
+
+function __toString(array $complex){
+    return $complex[0] . ($complex[1] != 0 ? (' + ' . $complex[1]) : '');
+}
+
+$c = Complex::create(5, 3);
+$c = Complex::sum($c, Complex::create(2, -1));
+
+echo Complex::__toString($c);</pre>
+<p align="justify">Puis, un nouvel opérateur (ressemblant fortemment à l'opérateur ternaire) va faire son apparition. Auparavant désigné par "ifsetor($a, $b)", celui-ci permet de retourner une valeur par défaut si la variable $a est pas définie. L'opérateur est le ?:. Voici quelques exemples :</p>
+
+<pre lang="php">$b = $_GET['b'] ?: 'novalue';
+echo $b; // -- Si $_GET n'est pas défini, affichera 'novalue', sinon la valeur de $_GET['b'].</pre>
+<p align="justify"><strong>Ajout du 4 mars 2008</strong> : Suite à <a href="/en-vrac/13-php-6-quelques-nouveautes.html#comment-25" hreflang="fr">une remarque de Sowhat</a>, j'ai oublié quelques trucs concernant PHP6, mea culpa. Tout d'abord, l'ajout de la syntaxe pythonienne de <a href="http://docs.php.net/substr">substr()</a>. Vous qui utilisiez les  pour situer un aractère d'une chaine de de caractères. En utilisant substr, et pour illustrer ces propos, on fera par exemple :</p>
+
+<pre lang="php">$var = 'PHP6';
+echo $var[2]; //Affiche H
+echo substr($var, 0, 3); // Affichera PHP</pre>
+<p align="justify">En revenant donc sur cette syntaxe (je vous laisse consulter la <a href="http://docs.php.net/">Doc PHP</a> pour plus d'infos sur <a href="http://docs.php.net/substr">substr()</a>, car là n'est pas là le sujet), les développeurs ont ajouté un truc très intéressant, qui remplace donc <a href="http://docs.php.net/substr">substr()</a>. Oui, vous l'avez deviné, maintenant, on pourra faire :</p>
+
+<pre lang="php">$var = 'PHP6';
+echo $var[2]; //Affiche H (ne changera pas :p)
+echo $var[0, 3]; // Affichera PHP</pre>
+<p align="justify">Je ne sais pas pour la syntaxe des {} utilisée avant que celle des [] ne soit mise en place , mais il me semble avoir également entendue qu'elle disparaitra... A confirmer ?</p>
+<p align="justify">Egalement, un autre ajout (et pas des moindres), l'ajout d'une syntaxe approchée des GOTO. Beurk, on est de retour à l'assembleur, à l'époque ou y'avait pas de boucles... Enfin, ce n'est que mon avis, j'ai peut-etre tort, j'ai peut etre raison :p</p>
+
+<pre lang="php">if( !isset($_GET['lbl']) ){
+     break lbl;
+} 
+
+$_GET['lbl'] = 3;
+:lbl // déclaration de l'étiquette "lbl".
+// du code, du code...</pre>
+<p align="justify">Ainsi, le bout de code entre le break lbl (oui, la modif consiste en cet ajout là, avec la syntaxe <strong>:mon_label</strong>) et le <strong>:lbl</strong> ne sera pas executé. Comme vous l'aurez constaté (:p), je ne suis que moyennement convaincu pour cette syntaxe....</p>
+<p align="justify">Je complèterais ce billet au fur et à mesure, pour mieux illustrer par des codes sources :p</p>
+
+<p align="justify">Et vous, PHP6 ?
+<strong> </strong>

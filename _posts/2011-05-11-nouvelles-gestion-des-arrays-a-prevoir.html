@@ -1,0 +1,39 @@
+---
+layout: post
+title: Nouvelles gestion des arrays à prévoir
+categories:
+- Talus' Works
+- Templates
+tags:
+- Arrays
+- Blocks
+- Foreach
+- Templates
+status: publish
+type: post
+published: true
+meta:
+  _syntaxhighlighter_encoded: '1'
+  _edit_last: '1'
+---
+<p style="text-align: justify;">Bonjour à tous,</p>
+<p style="text-align: justify;">Alors que ça fait une éternité que je n'ai pas mis à jour mon blog, je me jette à l'eau. Ceux qui me suivent sur twitter ont pu, je pense, le constater : je reprends peu à peu le développement de Talus' Works... Mais pour ça, j'ai besoin de faire une révision sur Talus' TPL. Procéder à <strong>un grand changement</strong> : la suppression des blocks (ou, pour être plus précis, <em>une fusion entre les foreach et les blocks</em>).</p>
+<!--more-->
+<p style="text-align: justify;">En effet, finalement, si on regarde de plus près... Les blocs et les foreach sont traduits de la même manière (... c'est à dire par un foreach !).</p>
+<p style="text-align: justify;">Mis à part deux trois fonctionnalités qui les différencient, que ce soit tant au niveau de l'utilisation PHP (alors que la balise &lt;foreach&gt;, c'est juste un traitement sur un array renseigné par <a href="https://github.com/Taluu/Talus-TPL/blob/master/Talus_TPL/Talus_TPL.php#L179">Talus_TPL::set()</a>, et que les balises &lt;block&gt;, c'est renseigné itérations par itérations via <a href="https://github.com/Taluu/Talus-TPL/blob/master/Talus_TPL/Talus_TPL.php#L268">Talus_TPL::block()</a>) que l'utilisation en template (présence de clés et de valeurs pour la balise &lt;foreach&gt; et variables spéciales pour les blocs, permettant de déterminer l'état de l'itération.</p>
+<p style="text-align: justify;">Mais finalement, c'est lourd... Comment traduire ceci et le rendre exportable ? Bien que Jordan avait fait quelques suggestions intéressantes (comme le principe de casser le compilateur en plusieurs sous-compilateurs, quitte à pouvoir faire des regroupement derrière), le soucis reste le même, et propose une <em>redondance</em>. Dans la plupart des scripts que je vois, utilisant mes templates (que ce soit au niveau du support ou ailleurs), les blocs comme les foreach sont utilisés de la même façon (même sur Talus' Works V1 !), pour au final faire la même chose...</p>
+<p style="text-align: justify;">L'idée est donc d'unifier les deux comportements, ne plus s'embêter avec les blocs. Certes, la cassure va être assez violente (j'essaierai d'instaurer un patch pour, mais je garantis rien), mais je la pense nécessaire. Voici en quelques lignes la spécification que j'ai en tête...</p>
+<p style="text-align: justify;">Utilisation que du foreach. L'utilisation reste la même :</p>
+[sourcecode language="xml"]&lt;foreach array=&quot;{$un_array}&quot; as=&quot;{$mon_array}&quot;&gt;
+&lt;foreach array=&quot;{$mon_array}&quot;&gt;[/sourcecode]
+<p style="text-align: justify;">donc, les deux utilisations resteront équivalentes... Mais, les variables foreach changent de formes, et s'étendent... Ceux familiers avec la syntaxe des blocs la reconnaîtront, bien qu'elle change un poil.</p>
+[sourcecode light="true"]
+{mon_array.key} : Valeur de la clé de l'itération
+{mon_array.value} : Valeur de l'itération -- peut être un array
+{mon_array.current} : Index de l'itération (de 1 à n)
+{mon_array.size} : Taille de l'array
+{mon_array.is_first} : Est-ce la première itération ? Transformé en condition ($current == 0)
+{mon_array.is_last} : Est-ce la dernière itération ? Transformé en condition ($current == $size - 1)
+[/sourcecode]
+<p style="text-align: justify;">Voilà où en est mon brouillon (enfin, en plus bordélique évidemment ! :p)</p>
+<p style="text-align: justify;">Ce n'est, bien évidemment, pas définitif, et je reste ouvert à toutes suggestions.</p>

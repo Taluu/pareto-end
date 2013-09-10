@@ -1,0 +1,37 @@
+---
+layout: post
+title: Mini-bug dans PHP 5.3...
+categories:
+- En Vrac
+- Labo
+tags:
+- Batch
+- PEAR
+- Phar
+- PHP
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+---
+<p style="text-align: justify;">Alors que je voulais installer PEAR sur mon WAMP (oui je développe sous Windows, et je vous merde), j'ai alors suivi les indications, comme quoi il faut executer le .bat présent à la racine du dossier de PHP (soit <strong>c:\wamp\bin\php\php.5.3.0\</strong> par défaut), affectueusement nommé <strong>go-pear.bat</strong>.</p>
+<p style="text-align: justify;"><!--more--></p>
+<p style="text-align: justify;">C'est ce que je fais, mais patatrac, je me trouve confronté à une, voire deux erreurs :</p>
+
+<blockquote style="color: #ffffff; background-color:#000000; padding:5px;">phar "C:\wamp\bin\php\php5.3.0\PEAR\go-pear.phar" does not have a signature
+
+PHP Warning:  require_once(phar://go-pear.phar/index.php): failed to open stream: phar error: invalid url or non-existent phar "phar://go-pear.phar/index.php" in C:\wamp\bin\php\php5.3.0\PEAR\go-pear.phar on line 1236
+
+Warning: require_once(phar://go-pear.phar/index.php): failed to open stream: phar error: invalid url or non-existent phar "phar://go-pear.phar/index.php" in C:\wamp\bin\php\php5.3.0\PEAR\go-pear.phar on line 1236</blockquote>
+<p style="text-align: justify;">Je vais alors voir mon ami google, qui me guide vers un bug reporté, qui lui même renvoi à un autre lien (bon, deux, les deux menants vers une solution +/- identique...), qui demande d'éditer le fichier go-pear.bat, et de le remplacer par le contenu suivant (désolé, pas de colorations batch, c'est absent du plug-in utilisé et c'est trop chiant à faire maison) :</p>
+
+<blockquote style="border:1px solid black; padding:5px;">@ECHO OFF
+set PHP_BIN=php.exe
+%PHP_BIN% -d output_buffering=0 -d phar.require_hash=0 PEAR\go-pear.phar
+pause</blockquote>
+Vous pouvez aussi modifier directement votre <strong>php.ini</strong>, en cherchant la directive <strong>phar.require_hash</strong>, la décommenter et lui donner la valeur <em>Off</em>.
+
+Pour une fois que je fais deux billets en une même journée (oui, ma "journée" a commencé tard hier, feignant que je suis)...
+
+<strong>EDIT &gt;</strong> j'ai modifié un peu le go-pear.bat, pour qu'il y ait également l'option de base (soit la désactivation du buffer)...

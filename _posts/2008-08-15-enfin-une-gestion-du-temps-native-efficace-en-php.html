@@ -1,0 +1,20 @@
+---
+layout: post
+title: Enfin une gestion native du temps efficace en PHP
+categories:
+- Labo
+tags:
+- DateTime
+- PHP5
+status: publish
+type: post
+published: true
+meta:
+  _use_texy: '1'
+  _edit_last: '1'
+---
+<p style="text-align: justify;">Bonsoir à tous,</p>
+<p style="text-align: justify;">Dans cet article, je vaus vous parler de la class DateTime, embarquée par défaut à partir de la version 5.2 de PHP. Celle-ci permet de gérer le timestamp de PHP à partir du timestamp UNIX (ou presque), comme le faisait time() et date() par exemple, mais de façon SQL (ou presque), avec une gestion des horaires efficaces (DateTimeZone), supplantant ainsi les fonctions gm*.</p>
+<p style="text-align: justify;"><!--more-->Mais, le coté de l'utilisation externe du timestamp UNIX a quelque peu été délaissé, ce qui est peu pratique... Mais avec quelques bidouilles, on s'en sort plutôt pas mal ! J'ai, pour ma part, choisi d'étendre la classe DateTime, pour combler ces quelques "faiblesses". Je peux maintenant utiliser les dates dans le format de strtotime() (très utile, genre l'utilisation de NOW qui est très pratique *_*), et aussi dans le format du timestamp UNIX !</p>
+<p style="text-align: justify;">Par contre, petit bémol, comme je choisi de faire les calculs de temps du coté du serveur Apache (PHP), et non plus SQL, j'ai du me charger de tout vérifier pour que ce soit bien PHP qui traite les informations, et non plus SQL... et c'était long.</p>
+<p style="text-align: justify;">Voici le lien vers la classe "étendue" : <a href="http://www.talus-works.net/source-php-includes-class-date.html">http://www.talus-works.net/source-php-includes-class-date.html</a></p>

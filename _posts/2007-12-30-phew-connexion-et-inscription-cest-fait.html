@@ -1,0 +1,20 @@
+---
+layout: post
+title: Phew, connexion et inscription, c'est fait !
+categories:
+- Talus' Works
+tags:
+- Connexion
+- Cookies
+- Déconnexion
+- Formulaires
+- FSB2
+- Talus' Works
+status: publish
+type: post
+published: true
+meta: {}
+---
+<p>Me vâla de retour :D</p> <p>A l'instant même, je viens de finir les systèmes pour s'inscrire, et se connecter sur <a href="/index.php?tag/Talus%20Works">Talus' Works</a> (avec la <a href="/index.php?tag/Connexion">connexion automatique</a>). Je me suis inspiré d'une technique utilisée par les projets de forums <a href="/index.php?tag/FSB2">FSB</a> (encore et toujours ceux là, oui, je sais). C'est à dire, j'ai une table pour les infos des utilisateurs, et une autre pour leur mots de passes.</p>
+<!--more-->
+<p>Celle ci contient leur mot de passe hashé en sha1(), leur ID, leur status (qu'ils soient activé ou non), leur clé d'activation, la date d'inscription (ou plutot de génération de cette même clé... Même si le compte est créé en même temps que là clé en fait :D). Tout utilisateur qui se créé un compte, mais qui ne l'active pas au bout de 7 jours verra son compte supprimé.</p> <p>Pour la connexion, j'ai fait un truc très simple (j'aime l'objet PHP5, <a href="/index.php?post/27/12/2007/Avancement-de-Talus-Works" hreflang="fr">je vous l'ai déjà dit</a>, non&nbsp;? :D), et pour la <a href="/index.php?tag/Connexion">connexion automatique</a>, j'ai fait un truc très simple aussi. On stocke juste la clé "d'autologin" d'un compte dans un <a href="/index.php?tag/Cookies">cookie</a> (et dans la BDD)&nbsp;; lorsque l'utilisateur a activé la connexion automatique (celle-ci dure jusqu'a ce que l'utilisateur choisissent de se déconnecter), si la clé correspond à une entrée dans la table, alors cette clé est regénérée, et l'utilisateur est connecté. Sinon, elle est détruite.</p> <p>J'ai également fait le <a href="/index.php?tag/Formulaires">formulaire</a> de contact, parce que j'étais lancé dans les <a href="/index.php?tag/Formulaires">formulaires</a> :p. Me reste encore les MPs à faire, et surtout les forums... J'ai déjà une base, mais c'est pas avec ca que je vais avancer. Enfin si, mais pas encore à l'etat testable sur le site :D</p> <p>Et puis... A peine ai-je ouvert les inscriptions, j'ai déjà vu une ame s'inscrire dessus (même si la <a href="/index.php?tag/Connexion">connexion</a> était pas encore faite ^^')... Huhu :D</p> <p>Je crois que ce sera tout pour la soirée :D</p>

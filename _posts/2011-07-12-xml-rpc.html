@@ -1,0 +1,60 @@
+---
+layout: post
+title: XML-RPC
+categories:
+- Labo
+- Petits trucs pour...
+tags:
+- Natif
+- PHP
+- XML-RPC
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _syntaxhighlighter_encoded: '1'
+---
+<p style="text-align: justify;">Yop,</p>
+<p style="text-align: justify;">Nouvelle découverte : XML-RPC. Bon, je connaissais déjà, mais je m'y suis un poil plus intéressé, surtout au niveau du traitement PHP. Auparavant, il fallait se contenter d'utiliser la classe <a href="http://phpxmlrpc.sourceforge.net/">PHPXMLRPC</a>, une ingominie sans nom (obsolète, car plus maintenu depuis maintenant presque 2 ans, et toujours en PHP4)... Mais depuis la version 4.1, PHP inclut dans son coeur la librairie xml-rpc.</p>
+<p style="text-align: justify;"><!--more--></p>
+<p style="text-align: justify;">Celle-ci offre un support natif de cette technologie, mais le seul hic (sinon ce serait trop facile :-°)... C'est que c'est trop peu documenté. Après avoir farfouillé sur le net à gauche à droite, j'ai enfin pu le faire fonctionner correctement : je ne me suis contenté, pour le moment, que de faire PHP - PHP, mais les possibilités sont bien entendues extensible à n'importe quel langage (c'est d'ailleurs le but même de XML-RPC : faire converser deux langages entre eux pour s'échanger des données), tel PHP - Python (faire fonctionner Pygments par exemple...), Python - Erlang, ou que sais-je encore...</p>
+<p style="text-align: justify;">Je vous donne donc mon exemple PHP - PHP, cassé en deux fichiers : un qui réceptionne la requête XML-RPC (donc le serveur), et un qui l'envoit et récéptionne le résultat (le client).</p>
+<p style="text-align: justify;">Le but est d'établir un contexte, puis d'envoyer en POST la requête XML du client. Le serveur réceptionne alors la requête (en analysant le flux d'entrée php://input).</p>
+<p style="text-align: justify;">Vous considérant assez grand et curieux par nature, je vous livre les deux scripts que j'ai fait : à vous d'adapter selon vos besoins, et de faire preuve d'inventivité !</p>
+
+[sourcecode language="php" title="xml_rpc_client.php"]
+&lt;?php
+$request = xmlrpc_encode_request('test', array('param 1', 'param 2')); // test est le nom de la méthode appelée ; l'array fournit les paramètres de la méthode appelée.
+
+$context = stream_context_create(
+  array(
+    'http' =&gt; array(
+      'method' =&gt; 'POST',
+      'header' =&gt; 'Content-Type: text/xml',
+      'content' =&gt; $request
+   )));
+
+$file = file_get_contents('./xml_rpc_server.php', false, $context); // envoi de la requête
+$response = xmlrpc_decode($file); // analyse de la réponse
+
+if (is_array($response) &amp;&amp; xmlrpc_is_fault($response)){
+  echo 'Failed';
+  exit;
+}
+
+var_dump($response);
+[/sourcecode]
+
+[sourcecode language="php" title="xml_rpc_server.php"]
+&lt;?php
+$xmlrpc_server = xmlrpc_server_create();
+xmlrpc_server_register_method($xmlrpc_server, 'test', function test($method_name, $args, $userData) {
+  return func_get_args();
+ }); // Assignation de la méthode &amp;quot;test&amp;quot; vers une fonction de traitement. celle-ci *doit* comporter 3 paramètres, aux noms assez explicites ici !
+
+header('Content-Type: text/xml');
+echo xmlrpc_server_call_method($xmlrpc_server, file_get_contents('php://input'), null); // appel et retour de la fonction.
+[/sourcecode]
+
+Quand j'aurais pas la flemme et du temps, je ferai un truc un peu plus détaillé sur les retours à avoir, et le guide pas à pas. :)

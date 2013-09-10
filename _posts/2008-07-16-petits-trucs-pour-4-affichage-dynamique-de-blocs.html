@@ -1,0 +1,23 @@
+---
+layout: post
+title: ! 'Petits trucs pour… #4 : Affichage dynamique de blocs'
+categories:
+- Labo
+- Petits trucs pour...
+tags:
+- DOM
+- javascript
+status: publish
+type: post
+published: true
+meta:
+  _use_texy: '1'
+  _edit_last: '1'
+  _wp_old_slug: petits-trucs-pour%e2%80%a6-4-affichage-dynamique-de-blocs
+---
+<p style="text-align: justify;">Bonsoir à tous,</p>
+<p style="text-align: justify;">Oui, il est un peu tard, mais voici la quatrième édition des "Petits trucs pour..." !. En voyant la demande d'un membre d'<a title="Art-Toon" href="http://www.art-toon.fr">Art-Toon</a> (<a href="http://www.art-toon.fr/forums-63-2076.html">Insérer un bloc avec un lien</a>), j'ai développé en deux deux un truc fonctionnel pour faire ce qu'il demande... Et c'est ce que je vais dévoiler ici.</p>
+<p style="text-align: justify;"><!--more--></p>
+<p style="text-align: justify;">Comme l'avait suggéré rocawear, il "suffisait" de faire un onclick sur le lien pour afficher / cacher le bloc. Oui, mais tant qu'a faire, allons un peu loin, et creusons un peu ce filon. Pourquoi ne pas, plutôt que d'afficher bêtement un bloc, quitte à faire s'empiler les uns sur les autres les blocs affichés au fur et à mesure, afficher un seul bloc (celui selectionné) et cacher les autres blocs à cacher ?</p>
+<p style="text-align: justify;">Grâce à DOM, tout devient "un peu" plus simple... Il suffit de parcourir tous les noeuds enfants (liste ChildNodes) d'un "parent" (qu'on a définit lors de l'appel à la fonction qui affiche / cache les blocs), et de regarder ceux qui ont un id dit "similaire", qu'il faut cacher. Et, en sortant de la boucle, afficher le bloc correspondant.</p>
+<p style="text-align: justify;"><a href="http://www.art-toon.fr/forums-63-2076-22158.html#r22158">Une fonction JS toute bête, finalement !</a></p>

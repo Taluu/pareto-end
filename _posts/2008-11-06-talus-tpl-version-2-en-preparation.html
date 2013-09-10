@@ -1,0 +1,32 @@
+---
+layout: post
+title: ! 'Talus'' TPL : Version 2 en préparation ?'
+categories:
+- Labo
+- Talus' Works
+- Templates
+tags:
+- Espace de noms
+- Talus' Works
+- Templates
+- V2
+- XML
+- XSLT
+status: publish
+type: post
+published: true
+meta:
+  _use_texy: '1'
+  _edit_last: '1'
+---
+<p style="text-align: justify;">Bonsoir à tous,</p>
+<p style="text-align: justify;">Oui, vous n'êtes pas aveugle ! Alors que la version 1 de Talus' TPL n'est pas encore tout à fait complète, je commence déjà à entammer <strong>la <em>deuxième</em> version de ce moteur TPL</strong> !</p>
+<p style="text-align: justify;"><!--more--></p>
+<p style="text-align: justify;">Bon, sachez que pour le moment, rien n'est encore fait (vous ne trouverez donc <em>pas</em> de scripts, même sur mon explorateur....). En effet, pour la prochaine version, je vais tenter de voir du coté d'un parseur qui utilisera toujours des regex (comme c'est le cas actuellement), mais moins.</p>
+<p style="text-align: justify;">En effet, je compte utiliser le parseur XSLT pour arriver à mes fins (donc, avec un document XSL et une DTD) pour parser les balises types xml (block, foreach, if / elseif / else, ...). Enfin, faut que je vois d'abord si c'est plus rapide avant, mais je pense que c'est plus ou moins le cas. Mais il y aura pas mal de changements dans l'air (par exemple, l'éventuelle utilisation d'un <a href="http://xmlfr.org/documentations/tutoriels/050912-0001">espace de nom</a> "tpl" pour les variables ; ou encore l'ajout d'un attribut "parent" à l'élément "block" ; ou pour finir, la suppression de l'attribut "condition" pour les conditions (if, elseif)).</p>
+
+[code='xml']<tpl :block name="fiston" parent="papa">...</tpl> <!-- au lieu de <block name="papa.fiston"> //-->
+<tpl :if cond="ma_condition">...</tpl> <!-- le <if condition="une_condition"> //-->[/code]
+<p style="text-align: justify;">Aussi, il est (peut-être ?) prévu de faire un validateur <em>online</em> de TPLs, via une DTD que j'aurais fait spécialement à cette occasion.</p>
+<p style="text-align:justify;">Enfin, sachez que même si je "commence" tout juste à développer cette v2, sachez que <strong>la v1 ne sera pas mise de coté</strong>, et sera <em>toujours maintenue</em><em>. (jusqu'à nouvel ordre du moins)</em></p>
+<p style="text-align: justify;"><em></em><em></em><em></em><em>(Tin, faut que je me trouve un colorateur de balises code digne de ce nom...  En attendant, contentez vous de ce truc fait maison :/)</em></p>

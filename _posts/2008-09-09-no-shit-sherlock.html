@@ -1,0 +1,24 @@
+---
+layout: post
+title: No Shit Sherlock !
+categories:
+- Talus' Works
+tags:
+- Explorateur
+- Faille
+- Wall
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _use_texy: '1'
+  _wp_old_slug: satanees-failles
+---
+<p style="text-align: justify;">Bonsoir à tous,</p>
+<p style="text-align: justify;">Quelques failles ont été découvertes sur mon système d'exploration de sources et du Wall. Elle permettait de voir <strong>des fichiers dits "<em>interdits</em>"</strong> (genre la config avec mes mots de passes SQL, que j'ai du changer à 3 ou 4 reprises, grmbl), via diverses tactiques.</p>
+<p style="text-align: justify;"><!--more--></p>
+<p style="text-align: justify;">Tout d'abord, j'ai essayé de mettre en place une solution simple pour contrer la première faille trouvée  (<acronym title="Insertion de ../ dans l'url">en remontant l'arborescence</acronym>) : <em>le remplacement de tout "../" par une chaîne vide</em>. Première sécurité, certes. Mais... <strong>Pas suffisante !</strong></p>
+<p style="text-align: justify;">J'ai donc mis une solution quelque peu "bourrine" : un <a href="http://fr.php.net/trim">trim()</a>, que j'appliquais sur un <a href="http://fr.php.net/substr">substr()</a>, lui même appliqué sur un <a href="http://fr.php.net/realpath">realpath()</a>.. qui lui était appliqué sur un <a href="http://fr.php.net/dirname">dirname()</a>, le tout concaténé avec un <a href="http://fr.php.net/basename">basename()</a> !. Mais ce n'était pas assez, on pouvait accéder à l'url <strong>grâce à l'introduction de caractères NUL (\0, %00, 0x00, ...)</strong>, <em>invisibles</em>, et <em>qui passaient donc les contrôles</em> ! Même si j'ai étendu le rôle de <a href="http://fr.php.net/trim">trim()</a>, rien à faire, la faille est toujours là. Mais, en enlevant le <a href="http://fr.php.net/dirname">dirname()</a> et le <a href="http://fr.php.net/basename">basename()</a> sur le fichier, et en mettant le <a href="http://fr.php.net/realpath">realpath()</a>... directement sur le fichier fourni en paramètre (sans concaténation, cette fois-ci, donc), ouf, je peux respirer, la faille semble être colmatée.</p>
+<p style="text-align: justify;">Mais... C'est sans compter sur la persévérence de <a href="http://www.siteduzero.com/membres-294-19076.html">Bilbax</a> (membre du <a title="Site du Zér0" href="http://www.siteduzero.com">SdZ</a>), qui m'a montré une autre faille,  super bête, quand à elle : <strong>indiquer un autre type de fichier plutôt que le type PHP</strong>. Ainsi, aucuns controle n'était fait, et permettait de voir (non coloré) le code source de ma config... Que j'ai immédiatement colmatée par un test obligatoire, et ce, <em>quelque-soit  le type du fichier</em>. Ouf, ça a l'air d'être réglé... Et pour de bon !</p>
+<p style="text-align: justify;">Je tiens donc à remercier <a href="http://www.siteduzero.com/membres-294-81490.html">Vanger</a>, <a href="http://www.siteduzero.com/membres-294-395.html">Savageman</a>, <a href="http://www.siteduzero.com/membres-294-8201.html">Jeremie78</a>, <a href="http://www.siteduzero.com/membres-294-68493.html">S0pra</a>, et <a href="http://www.siteduzero.com/membres-294-19076.html">Bilbax</a> (surtout lui, qui m'a bien aidé à déminer les dernières grosses failles) pour avoir découvert ces failles et de m'en avoir averti... Sans en avoir profité pour foutre le dawa dans ma base SQL :p. Si vous avez d'autre failles, n'hésitez pas à me la faire savoir :p. Enfin, pour la chute, c'est comme le vélo : il faut tomber pour apprendre !</p>
