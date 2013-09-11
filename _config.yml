@@ -2,6 +2,8 @@ name: Pareto's End
 markdown: redcarpet
 pygments: true
 timezone: Europe/Paris
+paginate: 10
+paginate_path: "archives/page:num"
 
 authors:
   taluu:
