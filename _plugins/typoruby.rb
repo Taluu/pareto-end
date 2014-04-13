@@ -5,7 +5,8 @@ require 'jekyll'
 class Jekyll::Converters::Markdown
     def convert(content)
         setup
-        Typogruby.improve(@parser.convert content)
+        content.gsub!(/^-- view more --$/, '')
+        return Typogruby.improve(@parser.convert content)
     end
 end
 

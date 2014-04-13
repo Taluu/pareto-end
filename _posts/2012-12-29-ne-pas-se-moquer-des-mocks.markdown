@@ -24,12 +24,6 @@ fini de dessiner une première architecture de tests fonctionnels à l'aide de B
 les tests PHPUnit pour qu'ils puissent fonctionner en "standalone", c'est à dire de façon complètement autonome et de
 faire ce qu'ils ont à faire : tester réellement les modules de façon unitaire.
 
-~~~php
-<?php
-
-echo 'hello world';
-~~~
-
 -- view more --
 
 Avant mon arrivée, ces tests faisaient une couche fonctionnelle (maintenant plus ou moins assurée par Behat), en se
