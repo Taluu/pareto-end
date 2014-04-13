@@ -12,7 +12,7 @@ class Kramdown::Converter::Pygs < Kramdown::Converter::Html
         code_attr = {}
         code_attr['class'] = "language-#{lang}" if lang
 
-        "#{' '*indent}<pre#{html_attributes(attr)}><code#{html_attributes(code_attr)}>#{code}</code></pre>\n"
+        "<div class=\"highlight\">#{' '*indent}<pre#{html_attributes(attr)}><code#{html_attributes(code_attr)}>#{code}</code></pre></div>\n"
     end
 
     def convert_codespan(el, indent)

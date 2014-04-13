@@ -9,6 +9,10 @@ excerpt_separator: "-- view more --"
 paginate: 10
 paginate_path: "archives/page:num"
 
+kramdown:
+    input: GFM
+    hard_wrap: false
+
 gems:
     - typogruby
     - kramdown
