@@ -6,7 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
   <title>
-    {{ page.title }} &middot; {{ site.title }}
+    {% if "Home" == page.title %}
+      {{ site.title }}
+    {% else %}
+      {{ page.title }} &middot; {{ site.title }}
+    {% endif %}
   </title>
 
   <!-- CSS -->

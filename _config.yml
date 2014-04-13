@@ -1,9 +1,10 @@
 name: Pareto's End
-title: Pareto's End
 tagline: Let's talk
 markdown: maruku
 pygments: true
 timezone: Europe/Paris
+
+excerpt_separator: "-- view more --"
 
 paginate: 10
 paginate_path: "archives/page:num"

@@ -1,29 +1,37 @@
 ---
 layout: default
-title: Pareto's End
+title: Home
 ---
 
-<div id="home">
-    <ul class="posts">
-    {% for post in paginator.posts %}
-        <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-    </ul>
+<div class="posts">
+  {% for post in paginator.posts %}
+  <div class="post">
+    <h1 class="post-title">
+      <a href="{{ post.url }}">
+        {{ post.title }}
+      </a>
+    </h1>
+
+    <span class="post-date">{{ post.date | date_to_string }}</span>
+
+    {{ post.excerpt }}
+  </div>
+  {% endfor %}
 </div>
 
 <div class="pagination">
-  {% if paginator.previous_page %}
-    <a href="/" class="first">First</a>
-    <a href="{{ paginator.previous_page_path }}" class="previous">Previous</a>
-  {% else %}
-    <span class="first">First</span>
-    <span class="previous">Previous</span>
-  {% endif %}
   {% if paginator.next_page %}
-    <a href="{{ paginator.next_page_path }}" class="next">Next</a>
-    <a href="archives/page{{ paginator.total_pages }}" class="last">Last</a>
+    <a class="pagination-item older" href="/page{{paginator.next_page}}">Older</a>
   {% else %}
-    <span class="next ">Next</span>
+    <span class="pagination-item older">Older</span>
+  {% endif %}
+  {% if paginator.previous_page %}
+    {% if paginator.page == 2 %}
+      <a class="pagination-item newer" href="/">Newer</a>
+    {% else %}
+      <a class="pagination-item newer" href="/page{{paginator.previous_page}}">Newer</a>
+    {% endif %}
+  {% else %}
+    <span class="pagination-item newer">Newer</span>
   {% endif %}
 </div>
-
