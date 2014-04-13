@@ -1,16 +1,29 @@
 name: Pareto's End
-markdown: redcarpet
+title: Pareto's End
+tagline: Let's talk
+markdown: maruku
 pygments: true
 timezone: Europe/Paris
+
 paginate: 10
 paginate_path: "archives/page:num"
 
-authors:
-  taluu:
-    display_name: Baptiste Clavié
-    gravatar: http://www.gravatar.com/avatar/b0789133fae4698a351758835b4e4a6d.png
-    email: clavie.b@gmail.com
-    web: http://baptiste.clavié.net/
+gems:
+    - typogruby
+    - kramdown
+
+info:
     twitter: talus_
-    github: taluu
+
+    github:
+        repo: taluu/taluu.github.io
+
+authors:
+    talus:
+        display_name: Baptiste Clavié
+        gravatar: http://www.gravatar.com/avatar/b0789133fae4698a351758835b4e4a6d.png
+        email: clavie.b@gmail.com
+        web: http://baptiste.clavié.net/
+        twitter: talus_
+        github: taluu
 
