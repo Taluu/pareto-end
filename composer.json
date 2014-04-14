@@ -1,0 +1,6 @@
+{
+    "require": {
+        "symfony/process": "dev-master",
+        "symfony/http-foundation": "dev-master"
+    }
+}
