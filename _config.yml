@@ -9,6 +9,13 @@ excerpt_separator: "-- view more --"
 paginate: 5
 paginate_path: "archives/page:num"
 
+exclude:
+    - vendor
+    - composer.json
+    - composer.lock
+    - README.md
+    - Gemsfile
+
 kramdown:
     input: GFM
     hard_wrap: false
