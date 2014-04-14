@@ -7,7 +7,7 @@ encoding: utf-8
 
 excerpt_separator: "-- view more --"
 
-paginate: 5
+paginate: 7
 paginate_path: "archives/page:num"
 
 exclude:
