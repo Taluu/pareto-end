@@ -3,6 +3,7 @@ tagline: Let's talk
 markdown: kramdown
 pygments: true
 timezone: Europe/Paris
+encoding: utf-8
 
 excerpt_separator: "-- view more --"
 
