@@ -1,8 +1,6 @@
 ---
 layout: post
 title: Ne pas se moquer des mocks !
-categories:
-- Labo
 tags:
 - Behat
 - Doctrine
