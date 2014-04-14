@@ -46,7 +46,281 @@ repositories si on utilise Doctrine par exemple), ... En plus, avec les
 genre d'opérations avec un simple `use MockEntityManager`. Et zou, on a accès à l'`EntityManager` (ou plutôt une partie
 intéressante de celui-ci, émulée bien évidemment), à une mini gestion de `Repository`, d'entités, ...
 
-{% gist 4407655 MockEntityManager.php %}
+```php
+<?php
+
+namespace Traits\Tests;
+
+/**
+ * Mocks the entity manager
+ *
+ * Provides everything in the memory, so the tests does not depend on doctrine,
+ * which does a lot of stuff (maybe too much). This also allows to avoid to
+ * need and modify the data in the database, even if those are for the tests.
+ *
+ * This mock provides the entity manager, a way to persist objets in memory
+ * (and also increment an id if it can do it through a setId method), and also
+ * manages repositories.
+ */
+trait MockEntityManager
+{
+    use MockWithoutConstructor;
+
+    private $entityManager = ['init'     => false,
+                              'mocks'    => [],
+                              'repos'    => [],
+                              'entities' => []];
+
+    /**
+     * Initializes the mocked entity manager
+     */
+    public function initEntityManager()
+    {
+        if ($this->entityManager['init']) {
+            return;
+        }
+
+        $this->entityManager['mocks'] = ['em'    => $this->getMockWithoutConstructor('\Doctrine\ORM\EntityManager'),
+                                         'repos' => []];
+
+        $this->entityManager['mocks']['em']->expects($this->any())
+                                           ->method('getRepository')
+                                           ->will($this->returnCallback(function ($repo) {
+                                                return $this->getRepository($repo);
+                                            }));
+
+        $callbackEntity = function ($method = 'persist') {
+            return function ($entity) use ($method) {
+                // don't even bother if it's not an object
+                if (!is_object($entity)) {
+                    return;
+                }
+
+                $alias = explode('\\', get_class($entity));
+                $alias = lcfirst(array_pop($alias));
+
+                if (!isset($this->entityManager['entities'][$alias])) {
+                    $this->entityManager['entities'][$alias] = ['sequence' => 0,
+                                                                'objects'  => []];
+                }
+
+                $found = null !== $entity->getId() 
+                       ? array_search($this->getEntityByAliasAndId($alias, $entity->getId()), $this->entityManager['entities'][$alias]['objects']) 
+                       : false;
+
+                switch ($method) {
+                    case 'persist':
+                        if (false === $found) {
+                            $found = $this->entityManager['entities'][$alias]['sequence']++;
+
+                            if (method_exists($entity, 'setId')) {
+                                $entity->setId($this->entityManager['entities'][$alias]['sequence']);
+                            }
+                        }
+
+                        $this->entityManager['entities'][$alias]['objects'][$found] = $entity;
+                        break;
+
+                    case 'remove':
+                        if (false !== $found) {
+                            unset($this->entityManager['entities'][$alias]['objects'][$found]);
+                        }
+
+                        break;
+                }
+            };
+        };
+
+        $this->entityManager['mocks']['em']->expects($this->any())
+                                           ->method('persist')
+                                           ->will($this->returnCallback($callbackEntity('persist')));
+
+        $this->entityManager['mocks']['em']->expects($this->any())
+                                           ->method('flush')
+                                           ->will($this->returnValue(null));
+
+        $this->entityManager['mocks']['em']->expects($this->any())
+                                           ->method('remove')
+                                           ->will($this->returnCallback($callbackEntity('remove')));
+
+        $this->entityManager['init'] = true;
+    }
+
+    /**
+     * Get the mocked entity manager.
+     *
+     * Initializes it if it was not already initialized.
+     */
+    public function getMockedEntityManager()
+    {
+        $this->initEntityManager();
+
+        return $this->entityManager['mocks']['em'];
+    }
+
+    /**
+     * Add a repository to be mocked.
+     *
+     * It also registers an alias for this repo
+     *
+     * @param string $alias   Alias for this repository
+     * @param string $fqcn    Class name of the repository
+     * @param array  $options Options to be given to this repository. Not used yet.
+     */
+    public function addRepository($alias, $fqcn, array $options = [])
+    {
+        $this->entityManager['mocks']['repos'][$alias] = $this->getMockWithoutConstructor($fqcn);
+        $this->entityManager['repos'][$alias] = ['fqcn'    => $fqcn,
+                                                 'options' => $options];
+    }
+
+    /**
+     * Get a repository.
+     *
+     * Searches first in the alias, then with the repo's classname
+     *
+     * @param string $repoName repo to get
+     * @return null|object null if not found, the mock otherwise
+     */
+    public function getRepository($repoName)
+    {
+        // first try to load via an alias
+        $repo = $this->getRepositoryByAlias($repoName);
+
+        if (null === $repo) {
+            $repo = $this->getRepositoryByClass($repoName);
+        }
+
+        return $repo;
+    }
+
+    /**
+     * Gets a repository by its alias.
+     *
+     * @param string $alias Alias to search
+     * @return null|object null if not found, the mock otherwise
+     */
+    public function getRepositoryByAlias($alias)
+    {
+        if (!isset($this->entityManager['mocks']['repos'][$alias])) {
+            return null;
+        }
+
+        return $this->entityManager['mocks']['repos'][$alias];
+    }
+
+    /**
+     * Gets a repository by its full classified class name.
+     *
+     * @param string $fqcn Class to search
+     * @return null|object null if not found, the mock otherwise
+     */
+    public function getRepositoryByClass($fqcn)
+    {
+        $found = false;
+
+        foreach ($this->entityManager['repos'] as $alias => $repo) {
+            if ($fqcn === $repo['fqcn']) {
+                return $this->getRepositoryByAlias($alias);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets an entity by its alias and its id.
+     *
+     * @param string $alias name of the entity, without the namespaces
+     * @param mixed  $id    Id to fetch. "null" to get the last entity
+     * @return object|null the entity if found, null otherwise
+     */
+    public function getEntityByAliasAndId($alias, $id = null)
+    {
+        if (!isset($this->entityManager['entities'][$alias])) {
+            return null;
+        }
+
+        if (0 === count($this->entityManager['entities'][$alias]['objects'])) {
+            return null;
+        }
+
+        if (null === $id) {
+            $entity = end($this->entityManager['entities'][$alias]['objects']);
+            reset($this->entityManager['entities'][$alias]['objects']);
+
+            return $entity;
+        }
+
+        foreach ($this->entityManager['entities'][$alias]['objects'] as $oid => $entity) {
+            if ($id === ($oid + 1) || $id === $entity->getId()) {
+                return $entity;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets the latest entity registered for $alias.
+     *
+     * @param string $alias Name of the entity, without the namespaces
+     * @return object|null the last entity if there is one, null otherwise
+     */
+    public function getEntityByAlias($alias)
+    {
+        return $this->getEntityByAliasAndId($alias, null);
+    }
+
+    /**
+     * Gets information on all the entities.
+     *
+     * @return array for each entities, return the fqcn, the current sequence
+     *         and the number of items
+     */
+    public function getAllEntities()
+    {
+        $tab = [];
+
+        foreach($this->entityManager['entities'] as $alias => $entities){
+            if (0 < count($entities['objects'])) {
+                $tab[$alias] = ['entity'   => get_class($entities['objects'][0]),
+                                'sequence' => $entities['sequence'],
+                                'count'    => count($entities['objects'])];
+            }
+        }
+
+        return $tab;
+    }
+
+    /**
+     * Gets the entities for a given alias, or all of them if null.
+     *
+     * The difference with getAllEntities() is that this method returns
+     * the object, instead of the information
+     *
+     * @return object[] ALLUVEM !
+     */
+    public function getEntities($alias = null)
+    {
+        if (null === $alias) {
+            $entities = [];
+
+            foreach ($this->entityManager['entities'] as $alias) {
+                $entities += $alias['objects'];
+            }
+
+            return $entities;
+        }
+
+        if (!isset($this->entityManager['entities'][$alias])) {
+            return null;
+        }
+
+        return $this->entityManager['entities'][$alias]['objects'];
+    }
+}
+```
 
 Ce qui en fait une sorte d'ORM, sans l'être non plus, car sans avoir tout le bouzin embarqué avec, ou même *la*
 fonctionnalité d'un ORM : la persistence des données. Alors qu'habituellement, ces données sont persistées d'une manière
@@ -54,7 +328,8 @@ ou d'une autre par le biais de votre SGBD favori, dans le cas d'un mock, vu qu'o
 du tests, on peut faire fi de cet aspect, et se contenter de les mettre quelque part en mémoire. C'est un peu le but de
 l'outil mock que j'ai en place. Je vous laisse essayer de jouer avec. :)
 
-Si vous explorez un peu le gist, outre le fichier du mock de l'entity manager, j'ai également créé un mock pour le
-`SecurityContext` de Symfony, qui lui reste beaucoup plus simple que celui de l'`EntityManager`.
+Si [vous explorez un peu le gist](https://gist.github.com/Taluu/4407655), outre le fichier du mock de l'entity manager,
+j'ai également créé un mock pour le `SecurityContext` de Symfony, qui lui reste beaucoup plus simple que celui de 
+l'`EntityManager`.
 
 Have fun. :)
