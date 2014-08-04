@@ -10,11 +10,6 @@
         <a href="/">Home</a>
       </li>
 
-      {% comment %}
-        The code below dynamically generates a sidebar nav of pages with
-        `layout: page` in the front-matter. See readme for usage.
-      {% endcomment %}
-
       {% assign pages_list = site.pages %}
       {% for node in pages_list %}
         {% if node.title != null %}
@@ -26,8 +21,8 @@
         {% endif %}
       {% endfor %}
 
-      <li class="sidebar-nav-item"><a href="http://twitter.com/{{ site.authors.talus.twitter }}">@{{ site.authors.talus.twitter }}</a></li>
-      <li class="sidebar-nav-item"><a href="http://github.com/{{ site.authors.talus.github }}">Github</a> (<a href="http://github.com/{{ site.info.github.repo }}">Fork Me !</a>)</li>
+      <li class="sidebar-nav-item"><a href="http://twitter.com/{{ site.info.twitter }}">@{{ site.info.twitter }}</a></li>
+      <li class="sidebar-nav-item"><a href="http://github.com/{{ site.info.github.user }}">Github</a> (<a href="http://github.com/{{ site.info.github.repo }}">Fork Me !</a>)</li>
     </ul>
 
     <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>
