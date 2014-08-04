@@ -46,6 +46,6 @@ end
 
 class Jekyll::Converters::Markdown::KramdownParser
     def convert(content)
-        Kramdown::Document.new(content, @config["kramdown"].symbolize_keys).to_pygs
+        Kramdown::Document.new(content, Jekyll::Utils.symbolize_hash_keys(@config["kramdown"])).to_pygs
     end
 end

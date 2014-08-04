@@ -1,9 +1,9 @@
 name: Pareto's End
 tagline: A procrastinator's ranting guide on development
 markdown: kramdown
-pygments: true
 timezone: Europe/Paris
 encoding: utf-8
+highlighter: pygments
 
 excerpt_separator: "-- view more --"
 
@@ -20,6 +20,7 @@ exclude:
 kramdown:
     input: GFM
     hard_wrap: false
+    enable_coderay: false
 
 gems:
     - typogruby
@@ -30,7 +31,7 @@ info:
     gravatar: http://www.gravatar.com/avatar/b0789133fae4698a351758835b4e4a6d.png
     email: clavie.b@gmail.com
     web: http://baptiste.clavié.net/
-    
+
     twitter: talus_
 
     github:
