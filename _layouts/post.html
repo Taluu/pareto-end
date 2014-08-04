@@ -4,7 +4,7 @@ layout: default
 
 <div class="post">
   <h1 class="post-title">{{ page.title }}</h1>
-  <span class="post-date">{{ page.date | date_to_string }}</span>
+  {% comment %} <span class="post-date">{{ page.date | date_to_long_string }}</span> {% endcomment %}
   
   {% if page.audio == true %}
     <div class="post-audio">
@@ -15,7 +15,7 @@ layout: default
   {{ content }}
   
   <em class="fork-and-edit">
-        By the way, if you found a typo, please <a href="http://github.com/taluu/pareto-end/edit/master/_posts/{{ page.url | remove_first:'/' | replace_first:'/','-' | replace_first:'/','-' |replace_first:'/','-' | remove:'/' }}.markdown">fork and edit this post</a>. Thank you so much!
+        By the way, if you found a typo, please <a href="http://github.com/taluu/pareto-end/edit/master/_posts/{{ page.url | remove_first:'/' | replace_first:'/','-' | replace_first:'/','-' |replace_first:'/','-' | remove:'.html' | remove:'/' }}.md">fork and edit this post</a>. Thank you so much!
         <br />
         This post is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
     </em>
