@@ -26,17 +26,13 @@ gems:
     - kramdown
 
 info:
+    display_name: Baptiste Clavié
+    gravatar: http://www.gravatar.com/avatar/b0789133fae4698a351758835b4e4a6d.png
+    email: clavie.b@gmail.com
+    web: http://baptiste.clavié.net/
+    
     twitter: talus_
 
     github:
-        repo: taluu/taluu.github.io
-
-authors:
-    talus:
-        display_name: Baptiste Clavié
-        gravatar: http://www.gravatar.com/avatar/b0789133fae4698a351758835b4e4a6d.png
-        email: clavie.b@gmail.com
-        web: http://baptiste.clavié.net/
-        twitter: talus_
-        github: taluu
-
+        user: taluu
+        repo: taluu/pareto-end
