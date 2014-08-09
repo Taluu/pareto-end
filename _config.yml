@@ -16,6 +16,7 @@ exclude:
     - composer.lock
     - README.md
     - Gemsfile
+    - save
 
 kramdown:
     input: GFM
