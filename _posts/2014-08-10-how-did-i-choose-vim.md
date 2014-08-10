@@ -36,5 +36,5 @@ Next time, I'm gonna introduce through a bunch of posts how did I configure it,
 even though you may check my [dotFiles repository](http://github.com/taluu/dotFiles)
 for my `.vimrc` file.
 
-[![A screen for my vim](/resources/my-vim.png)](/resources/my-vim.png)
+[![A screen for my vim](/resources/images/my-vim.png)](/resources/images/my-vim.png)
 
