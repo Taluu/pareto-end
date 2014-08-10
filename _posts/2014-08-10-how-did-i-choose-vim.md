@@ -3,7 +3,7 @@
 layout: post
 title: How did I choose Vim
 tags: [vim, config, ide]
-audio: false
+audio: ~
 
 ---
 
@@ -22,7 +22,7 @@ that), before going on PHPStorm, as I had an open source license thanks to my
 templating engine, which is not maintained anymore. But, the thing is... All I
 ever did use was at most 10% of the capabilities of such monsters. And, getting
 a cup of coffee (or tea, or whatever) each time I wanted to launch them was
-pretty tiring.
+pretty boring (yes, that was a troll of a sorts)
 
 So, I migrated to Sublime Text. It was good, and offered some good plugins. And
 then a friend of mine suggested me to use Vim a little bit more than what I was
