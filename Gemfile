@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'therubyracer'
 gem 'jekyll', '~>2.3'
 gem 'typogruby'
 
