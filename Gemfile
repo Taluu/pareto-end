@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'jekyll', '>=2.3'
+gem 'jekyll', '~>2.3'
 gem 'typogruby'
 
 # jekyll plugins
